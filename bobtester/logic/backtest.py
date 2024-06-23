@@ -110,7 +110,7 @@ class BackTestResult:
 
 
 class BackTester:
-    def __init__(self):
+    def __init__(self, ):
         self.btc, self.eth = CryptoDataMerger().generate_bitcoin_ethereum_dataframes()
 
     def backtest(self, name : str, strategy_conditions: Condition, asset: str, start_position : Callable[[DataFrame], bool], start_from : datetime.date | None = None) -> BackTestResult:

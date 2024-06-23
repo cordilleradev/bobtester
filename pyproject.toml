@@ -6,22 +6,17 @@ venvPath = "."
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
+[project]
 name = "bobtester"
 version = "0.1.0"
-author = "CordilleraDev"
-author_email = "amrith@cordillera.dev"
 description = "Options backtesting framework for crypto strategies"
-long_description = "file: README.md"
-long_description_content_type = "text/markdown"
-url = "https://github.com/cordilleradev/bobtester"
-license = "MIT"
+authors = [{ name = "CordilleraDev", email = "amrith@cordillera.dev" }]
+license = { file = "LICENSE" }
+readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-package_dir = "logic"
-packages = ["my_package"]
-python_requires = ">=3.6"
 dependencies = ["pandas", "matplotlib"]
+python_requires = ">=3.6"

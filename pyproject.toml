@@ -1,9 +1,5 @@
-[tool.pyright]
-venv = ".venv"
-venvPath = "."
-
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=61.0.0", "wheel", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -13,9 +9,15 @@ description = "Options backtesting framework for crypto strategies"
 authors = [{ name = "CordilleraDev", email = "amrith@cordillera.dev" }]
 license = { file = "LICENSE" }
 readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["crypto", "backtesting", "trading"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 dependencies = ["pandas", "matplotlib"]
+dynamic = ["version"]
+
+[tool.setuptools]
+packages = ["src"]

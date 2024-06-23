@@ -24,18 +24,6 @@ condition = Condition(open_price=0, period_days=14, profit_below_price_factor=0.
 backtester = BackTester()
 
 # Run backtest from a specific start date
-result = backtester.backtest("SampleStrategy", condition, "BTC", lambda data: data['close'][-1] > data['open'][-1], start_from="2020-01-01")
-print(result.summary())
-```
-
-**Plotting Results**
-```python
-from plot import plot_results
-plot_results(result.get_plot_data(), title="Backtest Results")
-```
-
-## Setup
-Ensure all dependencies are installed by running:
-```bash
-pip install pandas matplotlib numpy
+result = backtester.backtest("SampleStrategy", condition, "btc", lambda data: data['close'][-1] > data['open'][-1], start_from="2020-01-01")
+print(result.return_outcomes())
 ```

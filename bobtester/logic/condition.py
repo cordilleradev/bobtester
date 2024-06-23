@@ -1,4 +1,4 @@
-from logic import StrategyTypes, Outcomes
+from bobtester.logic import StrategyTypes, Outcomes
 
 class Bound:
     """

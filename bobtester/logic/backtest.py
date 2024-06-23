@@ -4,15 +4,16 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 import pandas as pd
-pd.options.mode.chained_assignment = None  # default='warn'
 from pandas import DataFrame, Index
 from pandas.core.window.expanding import Callable
-from logic.condition import Condition
-from logic import Outcomes
-from logic.normalize import CryptoDataMerger
-from logic.manipulate import get_sub_frames
+from bobtester.logic.condition import Condition
+from bobtester.logic import Outcomes
+from bobtester.logic.normalize import CryptoDataMerger
+from bobtester.logic.manipulate import get_sub_frames
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+
+pd.options.mode.chained_assignment = None  # default='warn'
 
 class BackTestResult:
     def __init__(self, name: str, outcomes: pd.DataFrame, crypto_data: pd.DataFrame):

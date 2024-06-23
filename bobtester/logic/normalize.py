@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import Tuple
-from logic import PathsEnum
+from bobtester.logic import PathsEnum
 
 class CryptoDataMerger:
     def __init__(self):

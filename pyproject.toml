@@ -1,3 +1,26 @@
 [tool.pyright]
 venv = ".venv"
 venvPath = "."
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+name = "bobtester"
+version = "0.1.0"
+author = "CordilleraDev"
+author_email = "amrith@cordillera.dev"
+description = "Options backtesting framework for crypto strategies"
+long_description = "file: README.md"
+long_description_content_type = "text/markdown"
+url = "https://github.com/cordilleradev/bobtester"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+package_dir = "logic"
+packages = ["my_package"]
+python_requires = ">=3.6"

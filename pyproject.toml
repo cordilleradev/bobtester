@@ -20,3 +20,8 @@ dependencies = ["pandas", "matplotlib"]
 
 [tool.setuptools]
 packages = ["bobtester"]
+
+
+[tool.pyright]
+venvPath="."
+venv=".venv"

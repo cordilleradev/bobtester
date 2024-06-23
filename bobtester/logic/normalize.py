@@ -3,12 +3,12 @@ from typing import Tuple
 from bobtester.logic import PathsEnum
 
 class CryptoDataMerger:
-    def __init__(self):
-        self.fear_and_greed_path = PathsEnum.FEAR_AND_GREED_INDEX.value
-        self.bitcoin_prices_path = PathsEnum.BITCOIN_PRICES.value
-        self.ethereum_prices_path = PathsEnum.ETHEREUM_PRICES.value
-        self.bitcoin_volatility_path = PathsEnum.BITCOIN_VOLATILITY.value
-        self.ethereum_volatility_path = PathsEnum.ETHEREUM_VOLATILITY.value
+    def __init__(self, fear_and_greed_path, bitcoin_prices_path, ethereum_prices_path, bitcoin_volatility_path, ethereum_volatility_path):
+        self.fear_and_greed_path = fear_and_greed_path
+        self.bitcoin_prices_path = bitcoin_prices_path
+        self.ethereum_prices_path = ethereum_prices_path
+        self.bitcoin_volatility_path = bitcoin_volatility_path
+        self.ethereum_volatility_path = ethereum_volatility_path
 
     def generate_bitcoin_ethereum_dataframes(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
         fear_and_greed_df = pd.read_csv(self.fear_and_greed_path)

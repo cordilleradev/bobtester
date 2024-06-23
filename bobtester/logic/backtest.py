@@ -1,11 +1,10 @@
 import datetime
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Callable
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 import pandas as pd
 from pandas import DataFrame, Index
-from pandas.core.window.expanding import Callable
 from bobtester.logic.condition import Condition
 from bobtester.logic import Outcomes
 from bobtester.logic.normalize import CryptoDataMerger
@@ -110,8 +109,16 @@ class BackTestResult:
 
 
 class BackTester:
-    def __init__(self, ):
-        self.btc, self.eth = CryptoDataMerger().generate_bitcoin_ethereum_dataframes()
+    def __init__(self, fear_and_greed_path, bitcoin_prices_path, ethereum_prices_path, bitcoin_volatility_path, ethereum_volatility_path):
+        # Forwarding the paths received from BackTester to CryptoDataMerger
+        self.merger = CryptoDataMerger(
+            fear_and_greed_path=fear_and_greed_path,
+            bitcoin_prices_path=bitcoin_prices_path,
+            ethereum_prices_path=ethereum_prices_path,
+            bitcoin_volatility_path=bitcoin_volatility_path,
+            ethereum_volatility_path=ethereum_volatility_path
+        )
+        self.btc, self.eth = self.merger.generate_bitcoin_ethereum_dataframes()
 
     def backtest(self, name : str, strategy_conditions: Condition, asset: str, start_position : Callable[[DataFrame], bool], start_from : datetime.date | None = None) -> BackTestResult:
         columns = ["start_date", "end_date", "outcome", "open_price", "close_price", "liquidated_at_price"]

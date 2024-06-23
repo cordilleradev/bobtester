@@ -17,7 +17,6 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = ["pandas", "matplotlib"]
-dynamic = ["version"]
 
 [tool.setuptools]
 packages = ["src"]

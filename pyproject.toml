@@ -19,4 +19,4 @@ classifiers = [
 dependencies = ["pandas", "matplotlib"]
 
 [tool.setuptools]
-packages = ["src"]
+packages = ["bobtester"]

@@ -1,6 +1,5 @@
 import pandas as pd
 from typing import Tuple
-from bobtester.logic import PathsEnum
 
 class CryptoDataMerger:
     def __init__(self, fear_and_greed_path, bitcoin_prices_path, ethereum_prices_path, bitcoin_volatility_path, ethereum_volatility_path):

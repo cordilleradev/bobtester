@@ -1,12 +1,5 @@
 from enum import Enum
 
-class PathsEnum(Enum):
-    BITCOIN_PRICES = "./data/bitcoin-prices.csv"
-    BITCOIN_VOLATILITY = "./data/bitcoin-volatility.csv"
-    ETHEREUM_PRICES = "./data/ethereum-prices.csv"
-    ETHEREUM_VOLATILITY = "./data/ethereum-volatility.csv"
-    FEAR_AND_GREED_INDEX = "./data/fear-and-greed-index.csv"
-
 class Outcomes(Enum):
     PROFITABLE = "Profitable"
     UNPROFITABLE = "Unprofitable"

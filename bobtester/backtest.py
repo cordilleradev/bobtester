@@ -5,10 +5,10 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 import pandas as pd
 from pandas import DataFrame, Index
-from bobtester.logic.condition import Condition
-from bobtester.logic import Outcomes
-from bobtester.logic.normalize import CryptoDataMerger
-from bobtester.logic.manipulate import get_sub_frames
+from bobtester.condition import Condition
+from bobtester import Outcomes
+from bobtester.normalize import CryptoDataMerger
+from bobtester.manipulate import get_sub_frames
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 

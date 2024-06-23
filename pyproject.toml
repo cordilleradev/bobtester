@@ -24,3 +24,4 @@ classifiers = [
 package_dir = "logic"
 packages = ["my_package"]
 python_requires = ">=3.6"
+dependencies = ["pandas", "matplotlib"]

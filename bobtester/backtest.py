@@ -134,14 +134,19 @@ class BackTester:
         sub_frames = get_sub_frames(crypto_dataframe, strategy_conditions.period_days)
         for i, edf in enumerate(sub_frames):
         # for df in sub_frames:
+            # Adjusted to pass trimmed dataframe to the callback
+            if len(edf) > strategy_conditions.period_days:
+                trimmed_edf = edf.iloc[:-strategy_conditions.period_days]
+            else:
+                trimmed_edf = pd.DataFrame()  # Empty dataframe if not enough rows
+
             df = edf.iloc[max(0, i - strategy_conditions.period_days + 1):i + 1].copy()
             start_date = df.iloc[0]['date']
             end_date = df.iloc[-1]['date']
             open_price = df.iloc[0]['open']
             close_price = df.iloc[-1]['price']
             outcome, liquidated_at_price = Outcomes.SKIPPED, 0
-
-            if start_position(edf):
+            if start_position(trimmed_edf):
                 strategy_conditions.update_open_price(new_open_price=open_price)
                 outcome, liquidated_at_price = self._get_outcome(df, strategy_conditions)
 

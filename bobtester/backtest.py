@@ -72,7 +72,7 @@ class BackTestResult:
         fig, ax = plt.subplots(figsize=(14, 7))
 
         # Plot price and volatility
-        ax.plot(self.crypto_data['date'], self.crypto_data['price'], label='Price', color='blue')
+        ax.plot(self.crypto_data['date'], self.crypto_data['close'], label='Price', color='blue')
         ax2 = ax.twinx()
         ax2.plot(self.crypto_data['date'], self.crypto_data['volatility'], label='Volatility', color='black')
 
@@ -144,7 +144,7 @@ class BackTester:
             start_date = df.iloc[0]['date']
             end_date = df.iloc[-1]['date']
             open_price = df.iloc[0]['open']
-            close_price = df.iloc[-1]['price']
+            close_price = df.iloc[-1]['close']
             outcome, liquidated_at_price = Outcomes.SKIPPED, 0
             if start_position(trimmed_edf):
                 strategy_conditions.update_open_price(new_open_price=open_price)
@@ -173,4 +173,4 @@ class BackTester:
             if low_liquidated or high_liquidated:
                 return Outcomes.LIQUIDATED, (float(row['low']) if low_liquidated else float(row['high']))
 
-        return condition.return_current_status(period.iloc[-1]['price']), 0
+        return condition.return_current_status(period.iloc[-1]['close']), 0

@@ -27,6 +27,18 @@ class CryptoDataMerger:
         self.ethereum_volatility_path = ethereum_volatility_path
 
     def generate_bitcoin_ethereum_dataframes(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """
+        Generate merged DataFrames for Bitcoin and Ethereum data.
+
+        This method loads data from CSV files, standardizes date columns, converts
+        relevant columns to numeric types, merges the data into two DataFrames (one for Bitcoin
+        and one for Ethereum), and interpolates missing data.
+
+        Returns:
+            Tuple[pd.DataFrame, pd.DataFrame]: A tuple containing two DataFrames:
+                - Bitcoin merged DataFrame
+                - Ethereum merged DataFrame
+        """
         # Load data
         fear_and_greed_df = pd.read_csv(self.fear_and_greed_path)
         bitcoin_prices_df = pd.read_csv(self.bitcoin_prices_path)

@@ -16,12 +16,23 @@ pd.options.mode.chained_assignment = None  # default='warn'
 
 class BackTestResult:
     def __init__(self, name: str, outcomes: pd.DataFrame, crypto_data: pd.DataFrame):
+        """
+        Initialize the BackTestResult object.
+
+        Args:
+            name (str): The name of the backtest.
+            outcomes (pd.DataFrame): DataFrame containing the outcomes of the backtest.
+            crypto_data (pd.DataFrame): DataFrame containing the cryptocurrency data.
+        """
         self.name = name
         self.outcomes = outcomes
         self.crypto_data = crypto_data
         self.prepare_data()
 
-    def prepare_data(self):
+    def prepare_data(self) -> None:
+        """
+        Prepare the crypto_data by initializing the outcome column and assigning outcomes based on the dates.
+        """
         # Initialize the outcome column in crypto_data
         self.crypto_data['outcome'] = 'SKIPPED'
 
@@ -30,13 +41,27 @@ class BackTestResult:
             mask = (self.crypto_data['date'] >= row['start_date']) & (self.crypto_data['date'] <= row['end_date'])
             self.crypto_data.loc[mask, 'outcome'] = row['outcome']
 
-    def export_outcome(self, merged_crypto_data_path : str | None = None, outcome_data_path : str | None = None):
+    def export_outcome(self, merged_crypto_data_path: str | None = None, outcome_data_path: str | None = None) -> None:
+        """
+        Export the outcomes and merged crypto data to CSV files.
+
+        Args:
+            merged_crypto_data_path (str | None): Path to save the merged crypto data CSV file.
+            outcome_data_path (str | None): Path to save the outcome data CSV file.
+        """
         if outcome_data_path is not None:
             self.outcomes.to_csv(outcome_data_path)
         if merged_crypto_data_path is not None:
             self.crypto_data.to_csv(merged_crypto_data_path)
 
+
     def return_outcome_stats(self) -> Dict[str, float]:
+        """
+        Calculate and return statistics about the outcomes of the backtest.
+
+        Returns:
+            Dict[str, float]: A dictionary containing the total positions taken and the percentages of each outcome type.
+        """
         # Filter out the rows where outcome is 'SKIPPED'
         filtered_data = self.outcomes[self.outcomes['outcome'] != 'SKIPPED']
 
@@ -67,7 +92,14 @@ class BackTestResult:
 
 
 
-    def get_plot(self):
+    def get_plot(self) -> Tuple[plt.figure, plt.Axes]:
+        """
+        Generate and return a plot of the crypto data, including price, volatility, and Fear & Greed Index,
+        with outcome backgrounds.
+
+        Returns:
+            Tuple[plt.Figure, plt.Axes]: The matplotlib figure and axes objects for the plot.
+        """
         # Set up the figure and axis
         fig, ax = plt.subplots(figsize=(14, 7))
 
@@ -121,6 +153,19 @@ class BackTester:
         self.btc, self.eth = self.merger.generate_bitcoin_ethereum_dataframes()
 
     def backtest(self, name : str, strategy_conditions: Condition, asset: str, start_position : Callable[[DataFrame], bool], start_from : datetime.date | None = None) -> BackTestResult:
+        """
+        Perform a backtest on the specified asset using the given strategy conditions.
+
+        Args:
+            name (str): The name of the backtest.
+            strategy_conditions (Condition): The conditions for the strategy.
+            asset (str): The asset to backtest ('btc' or 'eth').
+            start_position (Callable[[DataFrame], bool]): A callback function to determine the start position.
+            start_from (datetime.date | None): The start date for the backtest.
+
+        Returns:
+            BackTestResult: The result of the backtest.
+        """
         columns = ["start_date", "end_date", "outcome", "open_price", "close_price", "liquidated_at_price"]
         outcome_dataframe = DataFrame(columns=columns)
 
@@ -166,6 +211,16 @@ class BackTester:
 
 
     def _get_outcome(self, period: DataFrame, condition: Condition) -> Tuple[Outcomes, float]:
+        """
+        Determine the outcome of a trading period based on the given condition.
+
+        Args:
+            period (DataFrame): The DataFrame representing the trading period.
+            condition (Condition): The condition to evaluate.
+
+        Returns:
+            Tuple[Outcomes, float]: The outcome of the period and the liquidation price (if applicable).
+        """
         for index, row in period.iterrows():
             low_liquidated = condition.return_current_status(float(row['low'])) == Outcomes.LIQUIDATED
             high_liquidated = condition.return_current_status(float(row['high'])) == Outcomes.LIQUIDATED

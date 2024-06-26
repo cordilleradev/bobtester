@@ -92,7 +92,13 @@ class BackTestResult:
 
 
 
-    def get_plot(self) -> Tuple[plt.figure, plt.Axes]:
+    def get_plot(
+        self,
+        plot_volatility : bool = True,
+        plot_price : bool = True,
+        plot_profitability : bool = True,
+        plot_fear_and_greed : bool = True,
+    ) -> Tuple[plt.Figure, plt.Axes]:
         """
         Generate and return a plot of the crypto data, including price, volatility, and Fear & Greed Index,
         with outcome backgrounds.
@@ -103,23 +109,33 @@ class BackTestResult:
         # Set up the figure and axis
         fig, ax = plt.subplots(figsize=(14, 7))
 
-        # Plot price and volatility
-        ax.plot(self.crypto_data['date'], self.crypto_data['close'], label='Price', color='blue')
-        ax2 = ax.twinx()
-        ax2.plot(self.crypto_data['date'], self.crypto_data['volatility'], label='Volatility', color='black')
+        # Plot price if required
+        if plot_price:
+            ax.plot(self.crypto_data['date'], self.crypto_data['close'], label='Price', color='blue')
 
-        # Add third axis for fear and greed index
-        ax3 = ax.twinx()
-        ax3.spines['right'].set_position(("axes", 1.2))  # Offset the right spine of third axis
-        ax3.plot(self.crypto_data['date'], self.crypto_data['fear_and_greed'], label='Fear & Greed Index', color='grey')
-        ax3.set_ylabel('Fear & Greed Index')
+        # Plot volatility if required
+        if plot_volatility:
+            ax2 = ax.twinx()
+            ax2.plot(self.crypto_data['date'], self.crypto_data['volatility'], label='Volatility', color='black')
+            ax2.set_ylabel('Volatility')
+        else:
+            ax2 = None
 
-        # Add background color based on outcomes
-        colors = {'SKIPPED': 'white', 'PROFITABLE': 'green', 'LIQUIDATED': 'indigo', 'UNPROFITABLE': 'yellow'}
-        for outcome, color in colors.items():
-            ax.fill_between(self.crypto_data['date'], 0, 1, where=(self.crypto_data['outcome']==outcome),
-                            color=color, transform=ax.get_xaxis_transform(), alpha=0.3, label=f'{outcome} Zone')
+        # Plot fear and greed index if required
+        if plot_fear_and_greed:
+            ax3 = ax.twinx()
+            ax3.spines['right'].set_position(("axes", 1.2))  # Offset the right spine of third axis
+            ax3.plot(self.crypto_data['date'], self.crypto_data['fear_and_greed'], label='Fear & Greed Index', color='grey')
+            ax3.set_ylabel('Fear & Greed Index')
+        else:
+            ax3 = None
 
+        if plot_profitability:
+            # Add background color based on outcomes
+            colors = {'SKIPPED': 'white', 'PROFITABLE': 'green', 'LIQUIDATED': 'indigo', 'UNPROFITABLE': 'yellow'}
+            for outcome, color in colors.items():
+                ax.fill_between(self.crypto_data['date'], 0, 1, where=(self.crypto_data['outcome']==outcome),
+                                color=color, transform=ax.get_xaxis_transform(), alpha=0.3, label=f'{outcome} Zone')
         # Formatting the plot
         ax.xaxis.set_major_locator(mdates.MonthLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
@@ -127,17 +143,18 @@ class BackTestResult:
         ax.set_title(f'{self.name}: Crypto Price, Volatility, and Fear & Greed Index with Outcome Backgrounds')
         ax.set_xlabel('Date')
         ax.set_ylabel('Price')
-        ax2.set_ylabel('Volatility')
 
         # Legend
         handles, labels = [], []
         for ax in [ax, ax2, ax3]:
-            for handle, label in zip(*ax.get_legend_handles_labels()):
-                handles.append(handle)
-                labels.append(label)
+            if ax is not None:
+                for handle, label in zip(*ax.get_legend_handles_labels()):
+                    handles.append(handle)
+                    labels.append(label)
         plt.legend(handles, labels, loc='upper left')
 
         return fig, ax
+
 
 
 class BackTester:
